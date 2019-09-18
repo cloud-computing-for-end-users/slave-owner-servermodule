@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.29201.188
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "slave-owner-servermodule", "slave-owner-servermodule\slave-owner-servermodule.csproj", "{6203287B-3F52-4978-A55F-47E1A7C421EA}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "custom-message-based-implementation", "..\..\..\utility-netmq-protocol\src\protocol\custom-message-based-implementation\custom-message-based-implementation.csproj", "{9DF095D7-0C5D-4E89-91C1-3E0E4F0426D6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "message-based-communication", "..\..\..\utility-netmq-protocol\src\protocol\message-based-communication\message-based-communication.csproj", "{F5B6497D-C80C-4E23-86D0-AB5223E73408}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{6203287B-3F52-4978-A55F-47E1A7C421EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6203287B-3F52-4978-A55F-47E1A7C421EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6203287B-3F52-4978-A55F-47E1A7C421EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9DF095D7-0C5D-4E89-91C1-3E0E4F0426D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DF095D7-0C5D-4E89-91C1-3E0E4F0426D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DF095D7-0C5D-4E89-91C1-3E0E4F0426D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DF095D7-0C5D-4E89-91C1-3E0E4F0426D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5B6497D-C80C-4E23-86D0-AB5223E73408}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5B6497D-C80C-4E23-86D0-AB5223E73408}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5B6497D-C80C-4E23-86D0-AB5223E73408}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5B6497D-C80C-4E23-86D0-AB5223E73408}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

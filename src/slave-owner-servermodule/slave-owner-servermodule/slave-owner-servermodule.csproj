@@ -7,9 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="custom-message-based-implementation" Version="1.0.0-CI-20190911-090405" />
     <PackageReference Include="NetMQ" Version="4.0.0.207" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\utility-netmq-protocol\src\protocol\custom-message-based-implementation\custom-message-based-implementation.csproj" />
+    <ProjectReference Include="..\..\..\..\utility-netmq-protocol\src\protocol\message-based-communication\message-based-communication.csproj" />
   </ItemGroup>
 
 </Project>

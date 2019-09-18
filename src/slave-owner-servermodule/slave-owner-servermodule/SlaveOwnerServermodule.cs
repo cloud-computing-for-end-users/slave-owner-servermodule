@@ -1,12 +1,10 @@
 ﻿using custom_message_based_implementation.custom_request.slave_owner_servermodule;
 using custom_message_based_implementation.interfaces;
 using custom_message_based_implementation.model;
-using message_based_communication.encoding;
 using message_based_communication.model;
 using message_based_communication.module;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace slave_owner_servermodule
 {
@@ -56,17 +54,44 @@ namespace slave_owner_servermodule
             return list;
         }
 
-        public SlaveConnection GetSlave(ApplicationInfo appInfo, PrimaryKey primaryKey)
+        public Tuple<SlaveConnection,Port> GetSlave(ApplicationInfo appInfo, PrimaryKey primaryKey)
         {
             //TODO FIX THIS M8
-            return new SlaveConnection()
-            {
-                IP = new IP() { TheIP = "0.0.0..0.000." },
-                OwnerPrimaryKey = new PrimaryKey() { TheKey = -1 },
-                Port = new Port() { ThePort=-1},
-                SlaveID = new SlaveID() {ID="-1" }
-            };
+            //return new SlaveConnection()
+            //{
+            //    IP = new IP() { TheIP = "0.0.0..0.000." },
+            //    OwnerPrimaryKey = new PrimaryKey() { TheKey = -1 },
+            //    Port = new Port() { ThePort=-1},
+            //    SlaveID = new SlaveID() {ID="-1" }
+            //};
+
+            return instanciateNewSlave(appInfo, primaryKey);
+
         }
 
+        private Tuple<SlaveConnection, Port> instanciateNewSlave(ApplicationInfo  appInfo,PrimaryKey primaryKey)
+        {
+            //TODO make this the right way at some point, maybe not before docket is introduced
+            var slaveCommInfo = new ConnectionInformation()
+            {
+                IP = new IP() { TheIP = "127.0.0.1" },
+                Port = new Port() { ThePort = 10142 }
+            };
+            var portForRegistrations = new Port() { ThePort = 10143 };
+
+            //var encoding = new client_slave
+
+            //var slaveController = new SlaveController(new Port() { ThePort = 60606 }, portForRegistrations, new ModuleType() { TypeID = ModuleTypeConst.MODULE_TYPE_SLAVE }, new client_slave_message_communication.encoding.CustomEncoding());
+            //slaveController.Setup(slaveCommInfo, new Port() { ThePort = 10143 }, slaveCommInfo, new message_based_communication.encoding.Encoding.CustomEncoding());
+
+            var slaveConn = new SlaveConnection()
+            {
+                SlaveID = new SlaveID() { ID = "1" },
+                OwnerPrimaryKey = primaryKey,
+                Port = slaveCommInfo.Port,
+                IP = slaveCommInfo.IP
+            };
+            return new Tuple<SlaveConnection, Port>(slaveConn, portForRegistrations);
+        }
     }
 }
