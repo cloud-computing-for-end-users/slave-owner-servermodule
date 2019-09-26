@@ -9,9 +9,11 @@ namespace slave_owner_servermodule
 {
     public class Program
     {
+        private const bool IsLocalhost = true;
+
         static void Main(string[] args)
         {
-            Console.WriteLine("Slave owner servermodule is starting...");
+            Console.WriteLine("Slave Owner Servermodule is starting...");
 
             checked
             {
@@ -19,22 +21,22 @@ namespace slave_owner_servermodule
                 {
                     var portToListenForRegistration = new Port() { ThePort = 5533 };
 
-                    var server_module_connection_informtion = new ConnectionInformation()
+                    var server_module_connection_information = new ConnectionInformation()
                     {
-                        IP = new IP() { TheIP = "127.0.0.1" },
+                        IP = new IP() { TheIP = IsLocalhost ? "127.0.0.1" : "Fill in IP" },
                         Port = new Port() { ThePort = 5522 }
                     };
 
                     var slave_owner_module_conn_info = new ConnectionInformation()
                     {
-                        IP = new IP() { TheIP = "127.0.0.1" },
+                        IP = new IP() { TheIP = (IsLocalhost) ? "127.0.0.1" : "Fill in IP" },
                         Port = new Port() { ThePort = 5532 }
                     };
 
                     var slaveOwner = new SlaveOwnerServermodule(portToListenForRegistration, new ModuleType() { TypeID = ModuleTypeConst.MODULE_TYPE_SLAVE_OWNER }, new CustomEncoder());
-                    slaveOwner.Setup(server_module_connection_informtion, new Port() { ThePort = 5523 }, slave_owner_module_conn_info, new CustomEncoder());
+                    slaveOwner.Setup(server_module_connection_information, new Port() { ThePort = 5523 }, slave_owner_module_conn_info, new CustomEncoder());
 
-                    Console.WriteLine("The Slave Owner Servermodule have started successfully");
+                    Console.WriteLine("Slave Owner Servermodule has started successfully with self IP: " + slave_owner_module_conn_info.IP.TheIP + " and server IP: " + server_module_connection_information.IP.TheIP);
 
                     //test
                     ////var list = slaveOwner.GetListOfRunnableApplications();
