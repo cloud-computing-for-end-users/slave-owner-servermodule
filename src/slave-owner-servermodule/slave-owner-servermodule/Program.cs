@@ -10,7 +10,7 @@ namespace slave_owner_servermodule
 {
     public class Program
     {
-        private const bool IsLocalhost = true;
+        public const bool IsLocalhost = true;
 
         static void Main(string[] args)
         {

@@ -74,7 +74,7 @@ namespace slave_owner_servermodule
             //TODO make this the right way at some point, maybe not before docket is introduced
             var slaveCommInfo = new ConnectionInformation()
             {
-                IP = new IP() { TheIP = "10.152.212.21" },
+                IP = new IP() { TheIP = Program.IsLocalhost ? "127.0.0.1" : "10.152.212.21" },
                 Port = new Port() { ThePort = 10142 }
             };
             var portForRegistrations = new Port() { ThePort = 10143 };
