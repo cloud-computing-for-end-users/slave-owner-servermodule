@@ -29,12 +29,12 @@ namespace slave_owner_servermodule
             }
             else if(message is RequestGetListOfRunningApplications _GetListOFApps)
             {
-                Console.WriteLine("Recived request for GetListOfRunningApplications");
+                Console.WriteLine("Received request for GetListOfRunningApplications");
                 responsePayload = GetListOfRunnableApplications();
             }
             else
             {
-                throw new Exception("Reviced message that I don't know how to handle");
+                throw new Exception("Received message that I don't know how to handle");
             }
 
             var response = GenerateResponseBasedOnRequestAndPayload(message, responsePayload);
