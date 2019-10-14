@@ -1,0 +1,5 @@
+#build
+docker build -t slave-owner .
+
+#run
+docker run --network="bridge" -p 5532:5532 -p 5533:5533 slave-owner scp:5532 srp:5533 rcp:5522 rrp:5523  rip:172.17.0.2

@@ -23,11 +23,12 @@ namespace slave_owner_servermodule
         {
             object responsePayload = null;
 
-            if(message is RequestGetSlave _reqGetSlave)
+            if (message is RequestGetSlave _reqGetSlave)
             {
+                Console.WriteLine("Recived request for " + nameof(RequestGetSlave) );
                 responsePayload = GetSlave(_reqGetSlave.Arg2AppInfo, _reqGetSlave.Arg1PrimaryKey);
             }
-            else if(message is RequestGetListOfRunningApplications _GetListOFApps)
+            else if (message is RequestGetListOfRunningApplications _GetListOFApps)
             {
                 Console.WriteLine("Recived request for GetListOfRunningApplications");
                 responsePayload = GetListOfRunnableApplications();
@@ -47,14 +48,14 @@ namespace slave_owner_servermodule
         {
             //todo FIX obviously
             var list = new List<ApplicationInfo>();
-            list.Add(new ApplicationInfo() {ApplicationName ="kenneths app 1", ApplicationVersion = "Version awsome", RunningOnOperatingSystem="KOS1" });
-            list.Add(new ApplicationInfo() {ApplicationName ="kenneths app 2", ApplicationVersion = "Version more awsome", RunningOnOperatingSystem="KOS0" });
-            list.Add(new ApplicationInfo() {ApplicationName ="kenneths app 3", ApplicationVersion = "Version most awsome", RunningOnOperatingSystem="KOS2" });
+            list.Add(new ApplicationInfo() { ApplicationName = "kenneths app 1", ApplicationVersion = "Version awsome", RunningOnOperatingSystem = "KOS1" });
+            list.Add(new ApplicationInfo() { ApplicationName = "kenneths app 2", ApplicationVersion = "Version more awsome", RunningOnOperatingSystem = "KOS0" });
+            list.Add(new ApplicationInfo() { ApplicationName = "kenneths app 3", ApplicationVersion = "Version most awsome", RunningOnOperatingSystem = "KOS2" });
 
             return list;
         }
 
-        public Tuple<SlaveConnection,Port> GetSlave(ApplicationInfo appInfo, PrimaryKey primaryKey)
+        public SlaveConnection GetSlave(ApplicationInfo appInfo, PrimaryKey primaryKey)
         {
             //TODO FIX THIS M8
             //return new SlaveConnection()
@@ -69,29 +70,24 @@ namespace slave_owner_servermodule
 
         }
 
-        private Tuple<SlaveConnection, Port> instanciateNewSlave(ApplicationInfo  appInfo,PrimaryKey primaryKey)
+        private SlaveConnection instanciateNewSlave(ApplicationInfo appInfo, PrimaryKey primaryKey)
         {
             //TODO make this the right way at some point, maybe not before docket is introduced
-            var slaveCommInfo = new ConnectionInformation()
+            var slaveCommInfo = new SlaveConnection()
             {
-                IP = new IP() { TheIP = "10.152.212.21" },
-                Port = new Port() { ThePort = 10142 }
+                SlaveID = new SlaveID() { ID = "1" }
+                ,
+                OwnerPrimaryKey = primaryKey
+                ,
+                IP = new IP() { TheIP = "10.152.212.6" }
+                ,
+                Port = new Port() { ThePort = 60252 } //forwards to 10142
+                ,
+                RegistrationPort = new Port() { ThePort = 60253 } //forwards to 10143
+                ,
+                ConnectToRecieveImagesPort = new Port() { ThePort = 60254 } //forwards to 30303
             };
-            var portForRegistrations = new Port() { ThePort = 10143 };
-
-            //var encoding = new client_slave
-
-            //var slaveController = new SlaveController(new Port() { ThePort = 60606 }, portForRegistrations, new ModuleType() { TypeID = ModuleTypeConst.MODULE_TYPE_SLAVE }, new client_slave_message_communication.encoding.CustomEncoding());
-            //slaveController.Setup(slaveCommInfo, new Port() { ThePort = 10143 }, slaveCommInfo, new message_based_communication.encoding.Encoding.CustomEncoding());
-
-            var slaveConn = new SlaveConnection()
-            {
-                SlaveID = new SlaveID() { ID = "1" },
-                OwnerPrimaryKey = primaryKey,
-                Port = slaveCommInfo.Port,
-                IP = slaveCommInfo.IP
-            };
-            return new Tuple<SlaveConnection, Port>(slaveConn, portForRegistrations);
+            return slaveCommInfo;
         }
     }
 }
