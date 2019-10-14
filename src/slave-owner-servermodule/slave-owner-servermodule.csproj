@@ -12,8 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\utility-netmq-protocol\src\protocol\custom-message-based-implementation\custom-message-based-implementation.csproj" />
-    <ProjectReference Include="..\..\..\..\utility-netmq-protocol\src\protocol\message-based-communication\message-based-communication.csproj" />
+    <ProjectReference Include="..\..\..\utility-netmq-protocol\src\protocol\custom-message-based-implementation\custom-message-based-implementation.csproj" />
+    <ProjectReference Include="..\..\..\utility-netmq-protocol\src\protocol\message-based-communication\message-based-communication.csproj" />
   </ItemGroup>
 
 </Project>

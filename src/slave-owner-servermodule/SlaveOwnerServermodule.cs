@@ -30,12 +30,12 @@ namespace slave_owner_servermodule
             }
             else if (message is RequestGetListOfRunningApplications _GetListOFApps)
             {
-                Console.WriteLine("Recived request for GetListOfRunningApplications");
+                Console.WriteLine("Received request for GetListOfRunningApplications");
                 responsePayload = GetListOfRunnableApplications();
             }
             else
             {
-                throw new Exception("Reviced message that I don't know how to handle");
+                throw new Exception("Received message that I don't know how to handle");
             }
 
             var response = GenerateResponseBasedOnRequestAndPayload(message, responsePayload);
@@ -79,7 +79,7 @@ namespace slave_owner_servermodule
                 ,
                 OwnerPrimaryKey = primaryKey
                 ,
-                IP = new IP() { TheIP = "10.152.212.6" }
+                IP = new IP() { TheIP = Program.IsLocalhost ? "127.0.0.1" : "10.152.212.6" }
                 ,
                 Port = new Port() { ThePort = 60252 } //forwards to 10142
                 ,

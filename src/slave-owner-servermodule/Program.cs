@@ -22,7 +22,6 @@ namespace slave_owner_servermodule
         private const string ROUTER_COMM_PORT = "rcp";
         private const string ROUTER_REG_PORT = "rrp";
 
-
         static void Main(string[] args)
         {
             Console.WriteLine("Slave owner servermodule is starting...");
