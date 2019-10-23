@@ -2,4 +2,15 @@
 docker build -t slave-owner .
 
 #run
-docker run --network="bridge" -p 5532:5532 -p 5533:5533 slave-owner scp:5532 srp:5533 rcp:5522 rrp:5523  rip:172.17.0.2
+docker run --network="bridge" -p 5532:5532 -p 5533:5533 slave-owner isLocal:false scp:5532 srp:5533 rcp:5522 rrp:5523  rip:172.17.0.2
+
+
+#include this as system arguments
+#slave 1
+"{'SlaveConnection':{'ConnectionInformation':{'Port':{'ThePort':60252},'IP':{'TheIP':'127.0.0.1'}},'OwnerPrimaryKey':null,'SlaveID':null,'RegistrationPort':{'ThePort':60253},'ConnectToRecieveImagesPort':{'ThePort':60254}},'ApplicationName':'Word','ApplicationVersion':null,'OperatingSystemName':'Windows 10'}"
+#slave 2
+
+#slave 3
+
+#this one works
+docker run --network="bridge" -p 5532:5532 -p 5533:5533 slave-owner scp:5532 srp:5533 rcp:5522 rrp:5523 isLocal:false  rip:172.17.0.2 "{'SlaveConnection':{'ConnectionInformation':{'Port':{'ThePort':60252},'IP':{'TheIP':'10.52.212.88'}},'OwnerPrimaryKey':null,'SlaveID':null,'RegistrationPort':{'ThePort':60253},'ConnectToRecieveImagesPort':{'ThePort':60254}},'ApplicationName':'Paint','ApplicationVersion':'1','OperatingSystemName':'Windows 10'}"

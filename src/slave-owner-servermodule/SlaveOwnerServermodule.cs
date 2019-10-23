@@ -10,6 +10,8 @@ namespace slave_owner_servermodule
 {
     public class SlaveOwnerServermodule : BaseRouterModule, ISlaveOwnerServermodule
     {
+        public List<Slave> Slaves { get; set; }
+
         public SlaveOwnerServermodule(Port portForRegistrationToRouter, ModuleType moduleType, message_based_communication.encoding.Encoding customEncoding) : base(portForRegistrationToRouter, moduleType, customEncoding)
         {
         }
@@ -48,30 +50,47 @@ namespace slave_owner_servermodule
         {
             //todo FIX obviously
             var list = new List<ApplicationInfo>();
-            list.Add(new ApplicationInfo() { ApplicationName = "kenneths app 1", ApplicationVersion = "Version awsome", RunningOnOperatingSystem = "KOS1" });
-            list.Add(new ApplicationInfo() { ApplicationName = "kenneths app 2", ApplicationVersion = "Version more awsome", RunningOnOperatingSystem = "KOS0" });
-            list.Add(new ApplicationInfo() { ApplicationName = "kenneths app 3", ApplicationVersion = "Version most awsome", RunningOnOperatingSystem = "KOS2" });
 
+            foreach (var item in Slaves)
+            {
+                list.Add(new ApplicationInfo()
+                {
+                    ApplicationName = item.ApplicationName,
+                    ApplicationVersion = item.ApplicationVersion,
+                    RunningOnOperatingSystem = item.OperatingSystemName
+                });
+            }
+            
             return list;
         }
 
-        public SlaveConnection GetSlave(ApplicationInfo appInfo, PrimaryKey primaryKey)
+        public Slave GetSlave(ApplicationInfo appInfo, PrimaryKey primaryKey)
         {
-            //TODO FIX THIS M8
-            //return new SlaveConnection()
-            //{
-            //    IP = new IP() { TheIP = "0.0.0..0.000." },
-            //    OwnerPrimaryKey = new PrimaryKey() { TheKey = -1 },
-            //    Port = new Port() { ThePort=-1},
-            //    SlaveID = new SlaveID() {ID="-1" }
-            //};
-
-            return instanciateNewSlave(appInfo, primaryKey);
-
+            return FindSlave(appInfo, primaryKey);
+           
         }
 
+        private Slave FindSlave(ApplicationInfo appInfo, PrimaryKey pk)
+        {
+            foreach (var slave in Slaves)
+            {
+                if (slave.ApplicationName.Equals(appInfo.ApplicationName) &&
+                    slave.ApplicationVersion.Equals(appInfo.ApplicationVersion))
+                {
+                    slave.SlaveConnection.OwnerPrimaryKey = pk;
+                    return slave;
+                }
+            }
+
+            Console.WriteLine("No slave found, with arguments: {application info: {app name: " + appInfo.ApplicationName + ", app version: " + appInfo.ApplicationVersion + "}");
+            return null;
+        }
+
+        [Obsolete]
         private SlaveConnection instanciateNewSlave(ApplicationInfo appInfo, PrimaryKey primaryKey)
         {
+            // this method would be used in the case where the slave owner will actually instanciate new slaves.
+
             //TODO make this the right way at some point, maybe not before docket is introduced
             var slaveCommInfo = new SlaveConnection()
             {
@@ -79,9 +98,12 @@ namespace slave_owner_servermodule
                 ,
                 OwnerPrimaryKey = primaryKey
                 ,
-                IP = new IP() { TheIP = Program.IsLocalhost ? "127.0.0.1" : "10.152.212.6" }
-                ,
-                Port = new Port() { ThePort = 60252 } //forwards to 10142
+                ConnectionInformation = new ConnectionInformation()
+                {
+                    IP = new IP() { TheIP = Program.IsLocalhost ? "127.0.0.1" : "10.152.212.6" }
+                    ,
+                    Port = new Port() { ThePort = 60252 } //forwards to 10142
+                }
                 ,
                 RegistrationPort = new Port() { ThePort = 60253 } //forwards to 10143
                 ,

@@ -13,7 +13,7 @@ namespace slave_owner_servermodule
 {
     public class Program
     {
-        private const bool IsLocalhost = false;
+        public static bool IsLocalhost = true;
 
         private const string SELF_IP = "sip";
         private const string SELF_COMM_PORT = "scp";
@@ -21,6 +21,8 @@ namespace slave_owner_servermodule
         private const string ROUTER_IP = "rip";
         private const string ROUTER_COMM_PORT = "rcp";
         private const string ROUTER_REG_PORT = "rrp";
+        private const string IS_LOCALHOST = "isLocal";
+
 
         static void Main(string[] args)
         {
@@ -30,31 +32,49 @@ namespace slave_owner_servermodule
             {
                 try
                 {
+                    List<Slave> slaves = new List<Slave>();
+
+
                     SetupNLog();
                     //default netowrk settings
                     var portToListenForRegistration = new Port() { ThePort = 5533 };
                     var portToRegisterOn = new Port() { ThePort = 5523 };
 
-                    var router_conn_info= new ConnectionInformation()
+                    var router_conn_info = new ConnectionInformation()
                     {
-                        IP = new IP() { TheIP = IsLocalhost ? "127.0.0.1" : "127.0.0.1" },
+                        IP = new IP() { TheIP = null },
                         Port = new Port() { ThePort = 5522 }
                     };
 
                     var self_conn_info = new ConnectionInformation()
                     {
-                        IP = new IP() { TheIP = (IsLocalhost) ? "127.0.0.1" : SlaveOwnerServermodule.GetIP()},
-                        Port = new Port() { ThePort = 5532 }
+                        IP = new IP() { TheIP = null }, // is set after the reading of the system args because isLocalhost might change
+                        Port = new Port() { ThePort = 5532 } // todo port stuff
                     };
 
                     //setting network infromation with sys args
-                    foreach (var arg in args)
+                    int counter = 0;
+                    while( counter < args.Length)
                     {
+                        var arg = args[counter];
+
+                        if (arg.StartsWith("'{") || arg.StartsWith("{")) // this is not fool proof but it should work.
+                        {
+                            var slave = Slave.FromJSON(arg);
+                            slaves.Add(slave);
+                            Console.WriteLine("Adding slave: " + slave.ToJSON());
+                            counter++;
+                            continue;
+                        }
+
+
+
                         var split = arg.Split(":");
                         if (2 != split.Length)
                         {
                             throw new ArgumentException("Got badly formatted system arguments");
                         }
+
 
                         if (split[0].Equals(SELF_IP)) // set self ip
                         {
@@ -86,7 +106,50 @@ namespace slave_owner_servermodule
                             portToRegisterOn.ThePort = Convert.ToInt32(split[1]);
                             Console.WriteLine("Overriding router registration port with: " + split[1]);
                         }
+                        else if (split[0].Equals(IS_LOCALHOST))
+                        {
+                            Console.WriteLine("Overwriting is local host with:" + split[1]);
+
+                            if (split[1].Equals("true", StringComparison.InvariantCultureIgnoreCase))
+                            {
+                                IsLocalhost = true;
+                            }
+                            else if (split[1].Equals("false", StringComparison.InvariantCultureIgnoreCase))
+                            {
+                                IsLocalhost = false;
+                            }
+                            else
+                            {
+                                throw new Exception("ERROR IN SYSTEM ARGUMENTS");
+                            }
+                        }
+
+                        counter++;
                     }
+
+                    if (null == self_conn_info.IP.TheIP)
+                    {
+                        self_conn_info.IP.TheIP = IsLocalhost ? "127.0.0.1" : SlaveOwnerServermodule.GetIP();
+                    }
+
+                    if (null == router_conn_info.IP.TheIP)
+                    {
+                        router_conn_info.IP.TheIP = IsLocalhost ? "127.0.0.1" : "fill in ip";
+                    }
+                    
+
+                    if (0 == slaves.Count) // if no slaves added through sys arg add this dummy slave for getting 1 app to how in the GetListOfApplications
+                    {
+                        slaves.Add(new Slave()
+                        {
+                            SlaveConnection = null,
+                            ApplicationName = "DEFAULT",
+                            OperatingSystemName = "DEFAULT OS",
+                            ApplicationVersion = "VERSION DEFAULT"
+                        });
+                    }
+
+                    
 
                     Console.WriteLine(
                         "\n\n Using the following network parameters: \n self network info: \n{ IP: " + self_conn_info.IP.TheIP + ", comm_port: " + self_conn_info.Port.ThePort + ", reg_port: " + portToListenForRegistration.ThePort + " }"
@@ -94,6 +157,9 @@ namespace slave_owner_servermodule
                         + "\n\n");
 
                     var slaveOwner = new SlaveOwnerServermodule(portToListenForRegistration, new ModuleType() { TypeID = ModuleTypeConst.MODULE_TYPE_SLAVE_OWNER }, new CustomEncoder());
+                    //setting slaves on the slave owner
+                    slaveOwner.Slaves = slaves;
+
                     slaveOwner.Setup(router_conn_info, portToRegisterOn, self_conn_info, new CustomEncoder());
 
                     Console.WriteLine(
@@ -113,7 +179,7 @@ namespace slave_owner_servermodule
                     ////var response = decoded as Response;
 
                     Console.WriteLine("Putting main thread to sleep in a loop"); // used because read key can't be used when running in docker
-                    while (true) 
+                    while (true)
                     {
                         Thread.Sleep(1000);
                     }
