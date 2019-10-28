@@ -144,11 +144,17 @@ namespace slave_owner_servermodule
                         {
                             SlaveConnection = new SlaveConnection() // purposefully empty
                             {
-                                ConnectionInformation = new ConnectionInformation() { }
+                                ConnectionInformation = new ConnectionInformation() {
+                                    IP = new IP() { TheIP = "-1"}
+                                    ,Port = new Port() { ThePort = -1}
+                                }
                                 ,OwnerPrimaryKey = new PrimaryKey()
-                                , RegistrationPort = new Port()
-                                ,ConnectToRecieveImagesPort = new Port()
-                                ,SlaveID = new SlaveID()
+                                {
+                                    TheKey = -1
+                                }
+                                , RegistrationPort = new Port() { ThePort = -1}
+                                ,ConnectToRecieveImagesPort = new Port() { ThePort=-1}
+                                ,SlaveID = new SlaveID() { ID = "-1"}
                             },
                             ApplicationName = "DEFAULT",
                             OperatingSystemName = "DEFAULT OS",
