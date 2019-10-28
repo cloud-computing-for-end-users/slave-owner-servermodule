@@ -142,7 +142,14 @@ namespace slave_owner_servermodule
                     {
                         slaves.Add(new Slave()
                         {
-                            SlaveConnection = null,
+                            SlaveConnection = new SlaveConnection() // purposefully empty
+                            {
+                                ConnectionInformation = new ConnectionInformation() { }
+                                ,OwnerPrimaryKey = new PrimaryKey()
+                                , RegistrationPort = new Port()
+                                ,ConnectToRecieveImagesPort = new Port()
+                                ,SlaveID = new SlaveID()
+                            },
                             ApplicationName = "DEFAULT",
                             OperatingSystemName = "DEFAULT OS",
                             ApplicationVersion = "VERSION DEFAULT"
