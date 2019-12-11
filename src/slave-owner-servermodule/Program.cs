@@ -126,6 +126,8 @@ namespace slave_owner_servermodule
 
                         counter++;
                     }
+                    Console.WriteLine("Using Localhost:" + IsLocalhost);
+
 
                     if (null == self_conn_info.IP.TheIP)
                     {

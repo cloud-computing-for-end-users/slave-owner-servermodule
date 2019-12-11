@@ -13,4 +13,7 @@ docker run --network="bridge" -p 5532:5532 -p 5533:5533 slave-owner isLocal:fals
 #slave 3
 
 #this one works
-docker run --network="bridge" -p 5532:5532 -p 5533:5533 slave-owner scp:5532 srp:5533 rcp:5522 rrp:5523 isLocal:false  rip:172.17.0.2 "{'SlaveConnection':{'ConnectionInformation':{'Port':{'ThePort':60252},'IP':{'TheIP':'10.152.212.9'}},'OwnerPrimaryKey':null,'SlaveID':null,'RegistrationPort':{'ThePort':60253},'ConnectToRecieveImagesPort':{'ThePort':60254}},'ApplicationName':'Paint','ApplicationVersion':'1','OperatingSystemName':'Windows 10'}"
+docker run --network="bridge" -p 5532:5532 -p 5533:5533 slave-owner scp:5532 srp:5533 rcp:5522 rrp:5523 isLocal:false  rip:172.17.0.2 "{'SlaveConnection':{'ConnectionInformation':{'Port':{'ThePort':60252},'IP':{'TheIP':'10.152.212.14'}},'OwnerPrimaryKey':null,'SlaveID':null,'RegistrationPort':{'ThePort':60253},'ConnectToRecieveImagesPort':{'ThePort':60254}},'ApplicationName':'Paint','ApplicationVersion':'1','OperatingSystemName':'Windows 10'}"
+
+
+docker run --network="bridge" -p 5532:5532 -p 5533:5533 slave-owner scp:5532 srp:5533 rcp:5522 rrp:5523 isLocal:false  rip:172.17.0.2 "{'SlaveConnection':{'ConnectionInformation':{'Port':{'ThePort':60252},'IP':{'TheIP':'10.152.212.20'}},'OwnerPrimaryKey':null,'SlaveID':null,'RegistrationPort':{'ThePort':60253},'ConnectToRecieveImagesPort':{'ThePort':60254}},'ApplicationName':'Paint','ApplicationVersion':'2','OperatingSystemName':'Windows 10'}" "{'SlaveConnection':{'ConnectionInformation':{'Port':{'ThePort':60452},'IP':{'TheIP':'10.152.212.20'}},'OwnerPrimaryKey':null,'SlaveID':null,'RegistrationPort':{'ThePort':60453},'ConnectToRecieveImagesPort':{'ThePort':60454}},'ApplicationName':'Paint','ApplicationVersion':'1','OperatingSystemName':'Windows 10'}"
